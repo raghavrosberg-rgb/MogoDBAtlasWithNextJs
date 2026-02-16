@@ -1,4 +1,6 @@
+// index.js
 import Head from "next/head";
+import { useState } from "react";
 import clientPromise from "../lib/mongodb";
 import Category from "../components/Category";
 import Container from "../components/Container";
@@ -11,6 +13,14 @@ import Products from "../components/Products";
 import "tailwindcss/tailwind.css";
 
 export default function Home({ isConnected, products }) {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filter products based on search term
+  const filteredProducts = products.filter((product) =>
+    product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
       {isConnected && (
@@ -20,14 +30,14 @@ export default function Home({ isConnected, products }) {
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <div className="bg-white w-full min-h-screen">
-            <Header />
+            <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
             <Container>
               <Hero />
               <Category
                 category="Tech Wear"
-                categoryCount={`${products.length} Products`}
+                categoryCount={`${filteredProducts.length} Products`}
               />
-              <Products products={products} />
+              <Products products={filteredProducts} />
               <Pagination />
             </Container>
             <Footer />

@@ -1,3 +1,4 @@
+// Header.js
 import React, { useState } from "react";
 import Link from "next/link";
 import {
@@ -7,9 +8,13 @@ import {
 } from "@heroicons/react/outline";
 import Cart from "./Cart";
 
-const Header = () => {
+const Header = ({ searchTerm, setSearchTerm }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <>
@@ -83,7 +88,9 @@ const Header = () => {
             <input
               className="w-full border rounded-md pl-10 pr-4 py-2 focus:border-green-500 focus:outline-none focus:shadow-outline"
               type="text"
-              placeholder="Search"
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={handleSearchChange}
             />
           </div>
         </div>
